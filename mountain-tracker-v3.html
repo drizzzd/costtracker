@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mountain Tracker</title>
+<style>
+  :root{
+    --ink:#142033;
+    --muted:#7b8797;
+    --line:#e7ebf0;
+    --panel:#ffffff;
+    --field:#ffffff;
+    --bg:#f7f8fa;
+    --dark:#09172a;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  .app{max-width:1820px;margin:0 auto;padding:0 22px 42px}
+  header{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:18px;padding:0 0 14px;
+  }
+  h1{font-size:42px;line-height:1;margin:0;font-weight:850;letter-spacing:-.035em}
+  .top-actions{display:flex;align-items:center;gap:12px}
+  .grand{
+    background:#fff;border:1px solid var(--line);border-radius:9px;
+    padding:11px 18px;font-weight:850;font-size:15px;box-shadow:0 1px 2px rgba(0,0,0,.03)
+  }
+  button{
+    border:1px solid var(--line);background:#fff;border-radius:8px;
+    padding:8px 12px;font-weight:750;font-size:12px;color:var(--ink);
+    cursor:pointer;box-shadow:0 1px 1px rgba(0,0,0,.02)
+  }
+  button:hover{background:#f1f4f7}
+  .boards{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(520px,1fr));
+    gap:16px;align-items:start
+  }
+  .board{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.025)
+  }
+  .board-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:16px 17px 14px;border-bottom:1px solid var(--line)
+  }
+  .board-title{
+    border:0;background:transparent;font-size:18px;font-weight:850;
+    padding:0;margin:0;min-width:0;width:100%;color:#111827
+  }
+  .board-total{font-weight:850;font-size:14px;white-space:nowrap}
+  .board-tools{padding:14px 17px;display:flex;gap:8px;border-bottom:1px solid var(--line)}
+  .section{padding:9px 17px 4px}
+  .section-head{
+    display:grid;grid-template-columns:auto 1fr auto auto auto;gap:8px;align-items:center;
+    padding:6px 0 7px;border-bottom:1px solid var(--line)
+  }
+  .collapse{
+    width:26px;height:26px;padding:0;border-radius:7px;line-height:1;font-size:13px;
+    display:flex;align-items:center;justify-content:center;color:#334155
+  }
+  .section-title{
+    border:0;background:transparent;color:#7c8797;font-size:12px;font-weight:900;
+    letter-spacing:.02em;text-transform:uppercase;padding:0;min-width:0;width:100%
+  }
+  .section-total{font-size:12px;color:#7c8797;font-weight:800;white-space:nowrap}
+  .delete-section{
+    background:var(--dark);color:#fff;border:0;border-radius:999px;
+    width:38px;height:18px;padding:0;display:flex;align-items:center;justify-content:center
+  }
+  .rows{padding:7px 0 6px}
+  .row{
+    display:grid;grid-template-columns:1fr 132px 24px 38px;gap:8px;
+    align-items:center;margin:7px 0
+  }
+  input{
+    height:38px;border:1px solid var(--line);border-radius:8px;background:var(--field);
+    padding:0 11px;color:#111827;font-weight:650;outline:none;
+  }
+  input:focus{border-color:#9aa8ba;box-shadow:0 0 0 3px rgba(100,116,139,.12)}
+  .desc{width:100%}
+  .cost{width:100%;text-align:left}
+  .move-btn{
+    height:18px;width:24px;padding:0;display:flex;align-items:center;justify-content:center;
+    color:#475569;background:#fff;border-radius:6px;font-size:12px;line-height:1
+  }
+  .move-stack{height:38px;display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center}
+  .delete-row{
+    height:38px;width:38px;padding:0;background:var(--dark);color:#fff;border:0;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1
+  }
+  .section.collapsed .rows{display:none}
+  .section.collapsed .collapse{transform:rotate(-90deg)}
+  .empty{padding:28px 17px;color:var(--muted);font-weight:650}
+  @media (max-width:700px){
+    .app{padding:8px 10px 30px}
+    header{align-items:flex-start}
+    h1{font-size:32px}
+    .boards{grid-template-columns:1fr}
+    .row{grid-template-columns:1fr 105px 24px 34px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Mountain Tracker</h1>
+    <div class="top-actions">
+      <div class="grand" id="grandTotal">$0</div>
+      <button id="addBoard">+ Board</button>
+    </div>
+  </header>
+  <main class="boards" id="boards"></main>
+</div>
+
+<script>
+const seedData = [
+  {
+    "id": "b1",
+    "title": "Remodel",
+    "sections": [
+      {
+        "id": "s1",
+        "title": "FLOORING",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Tile Material",
+            "cost": 16500
+          },
+          {
+            "desc": "Tile Installation",
+            "cost": 15000
+          },
+          {
+            "desc": "Hardwood Flooring (Material + Installation)",
+            "cost": 19000
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "WALLS",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Baseboard (Material + Installation)",
+            "cost": 4000
+          },
+          {
+            "desc": "Paint (Walls, Ceiling, Baseboards)",
+            "cost": 10001
+          },
+          {
+            "desc": "Drywall Repair",
+            "cost": 2000
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "COUNTERTOPS",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Quarts Slabs (4)",
+            "cost": 6000
+          },
+          {
+            "desc": "Kitchen Countertop Installation",
+            "cost": 6500
+          },
+          {
+            "desc": "Bathroom Vanity Countertop Fabrication + Installation",
+            "cost": 3000
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "CABINETS",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Cabinetry Paint Labor",
+            "cost": 7000
+          },
+          {
+            "desc": "Cabinetry Paint Material",
+            "cost": 500
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "BATHROOM HARDWARE AND PLUMBING",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Master Bathroom Undermounted Sinks",
+            "cost": 400
+          },
+          {
+            "desc": "Master Bathroom Vanity Faucets",
+            "cost": 1200
+          },
+          {
+            "desc": "Master Bathroom Vanity Light Fixtures",
+            "cost": 400
+          },
+          {
+            "desc": "Master Bathroom Vanity Mirrors",
+            "cost": 600
+          },
+          {
+            "desc": "Master Tub Fixture",
+            "cost": 500
+          },
+          {
+            "desc": "Master Shower Fixture",
+            "cost": 700
+          },
+          {
+            "desc": "Eisley Bathroom Vanity",
+            "cost": 1800
+          },
+          {
+            "desc": "Eisley Bathroom Vanity Mirror",
+            "cost": 450
+          },
+          {
+            "desc": "Eisley Bathroom Vanity Faucet",
+            "cost": 640
+          },
+          {
+            "desc": "Eisley Bathroom Vanity Light Fixture",
+            "cost": 275
+          },
+          {
+            "desc": "Eisley Shower Fixture",
+            "cost": 700
+          },
+          {
+            "desc": "Cash Bathroom Vanity Faucet",
+            "cost": 640
+          },
+          {
+            "desc": "Cash Bathroom Vanity Light Fixture",
+            "cost": 200
+          },
+          {
+            "desc": "Cash Bathroom Vanity Mirror",
+            "cost": 300
+          },
+          {
+            "desc": "Cash Bathroom Shower Fixture",
+            "cost": 700
+          }
+        ]
+      },
+      {
+        "id": "s6",
+        "title": "FANS AND LIGHTING",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Ceiling Fans",
+            "cost": 3600
+          },
+          {
+            "desc": "Hanging Light Fixtures",
+            "cost": 5000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b2",
+    "title": "New Board",
+    "sections": [
+      {
+        "id": "s7",
+        "title": "MASTER BEDROOM",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Storage Credenza",
+            "cost": 4000
+          },
+          {
+            "desc": "Nightstand Dressers",
+            "cost": 4000
+          },
+          {
+            "desc": "Mattress",
+            "cost": 4000
+          }
+        ]
+      },
+      {
+        "id": "s8",
+        "title": "EISLEY'S ROOM",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Trundle Bed",
+            "cost": 1600
+          },
+          {
+            "desc": "Full Mirror",
+            "cost": 200
+          },
+          {
+            "desc": "Vanity Desk + Storage",
+            "cost": 600
+          },
+          {
+            "desc": "Built-In Shelving Frame",
+            "cost": 250
+          },
+          {
+            "desc": "Mattresses",
+            "cost": 1500
+          }
+        ]
+      },
+      {
+        "id": "s9",
+        "title": "CASH'S ROOM",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Trundle Bed",
+            "cost": 1700
+          },
+          {
+            "desc": "Bookshelf + Drawer Combos",
+            "cost": 2000
+          },
+          {
+            "desc": "Corner Floating Shelves",
+            "cost": 840
+          },
+          {
+            "desc": "Desk",
+            "cost": 1200
+          },
+          {
+            "desc": "Reading Chair",
+            "cost": 850
+          },
+          {
+            "desc": "Mattresses",
+            "cost": 1500
+          }
+        ]
+      },
+      {
+        "id": "s10",
+        "title": "LIVING ROOM",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Sofa",
+            "cost": 7500
+          },
+          {
+            "desc": "Chair",
+            "cost": 2500
+          },
+          {
+            "desc": "Coffee Table",
+            "cost": 600
+          }
+        ]
+      },
+      {
+        "id": "s11",
+        "title": "DINING ROOM",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Table Bench",
+            "cost": 630
+          }
+        ]
+      },
+      {
+        "id": "s12",
+        "title": "MISC",
+        "collapsed": false,
+        "items": [
+          {
+            "desc": "Rugs",
+            "cost": 5000
+          },
+          {
+            "desc": "Adirondack Chairs",
+            "cost": 725
+          },
+          {
+            "desc": "Teak Patio Dining Set",
+            "cost": 1600
+          }
+        ]
+      }
+    ]
+  }
+];
+
+const uid = () => Math.random().toString(36).slice(2,10);
+const money = n => '$' + Math.round(Number(n || 0)).toLocaleString('en-US');
+const parseCost = v => {
+  if (typeof v === 'number') return v;
+  const cleaned = String(v ?? '').replace(/[^0-9.-]/g,'');
+  const num = Number(cleaned);
+  return Number.isFinite(num) ? num : 0;
+};
+
+let data = structuredClone(seedData);
+try {
+  const saved = localStorage.getItem('mountainTrackerData');
+  if (saved) data = JSON.parse(saved);
+} catch {}
+
+function save(){ localStorage.setItem('mountainTrackerData', JSON.stringify(data)); }
+function sectionTotal(section){ return section.items.reduce((sum, item) => sum + parseCost(item.cost), 0); }
+function boardTotal(board){ return board.sections.reduce((sum, section) => sum + sectionTotal(section), 0); }
+function grandTotal(){ return data.reduce((sum, board) => sum + boardTotal(board), 0); }
+
+function updateTotals(){
+  document.getElementById('grandTotal').textContent = money(grandTotal());
+  document.querySelectorAll('[data-board-total]').forEach(el => {
+    const b = data.find(x => x.id === el.dataset.boardTotal);
+    if (b) el.textContent = money(boardTotal(b));
+  });
+  document.querySelectorAll('[data-section-total]').forEach(el => {
+    const [bid, sid] = el.dataset.sectionTotal.split('|');
+    const b = data.find(x => x.id === bid);
+    const s = b?.sections.find(x => x.id === sid);
+    if (s) el.textContent = money(sectionTotal(s));
+  });
+}
+
+function render(){
+  const wrap = document.getElementById('boards');
+  wrap.innerHTML = '';
+  data.forEach(board => {
+    const boardEl = document.createElement('section');
+    boardEl.className = 'board';
+    boardEl.dataset.boardId = board.id;
+    boardEl.innerHTML = `
+      <div class="board-head">
+        <input class="board-title" value="">
+        <div class="board-total" data-board-total="${board.id}"></div>
+      </div>
+      <div class="board-tools">
+        <button data-action="add-cost">+ Cost</button>
+        <button data-action="add-section">+ Section</button>
+        <button data-action="delete-board">Delete</button>
+      </div>
+      <div class="section-wrap"></div>
+    `;
+    boardEl.querySelector('.board-title').value = board.title;
+    const sectionWrap = boardEl.querySelector('.section-wrap');
+
+    board.sections.forEach(section => {
+      const sec = document.createElement('div');
+      sec.className = 'section' + (section.collapsed ? ' collapsed' : '');
+      sec.dataset.sectionId = section.id;
+      sec.innerHTML = `
+        <div class="section-head">
+          <button class="collapse" data-action="toggle-section">▾</button>
+          <input class="section-title" value="">
+          <div class="section-total" data-section-total="${board.id}|${section.id}"></div>
+          <button data-action="add-cost-to-section">+ Cost</button>
+          <button class="delete-section" data-action="delete-section">×</button>
+        </div>
+        <div class="rows"></div>
+      `;
+      sec.querySelector('.section-title').value = section.title;
+      const rows = sec.querySelector('.rows');
+
+      section.items.forEach((item, i) => {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.dataset.itemIndex = i;
+        row.innerHTML = `
+          <input class="desc" value="">
+          <input class="cost" inputmode="decimal" value="">
+          <div class="move-stack">
+            <button class="move-btn" title="Move up" data-action="move-up">↑</button>
+            <button class="move-btn" title="Move down" data-action="move-down">↓</button>
+          </div>
+          <button class="delete-row" data-action="delete-row">×</button>
+        `;
+        row.querySelector('.desc').value = item.desc;
+        row.querySelector('.cost').value = item.cost === '' ? '' : String(item.cost);
+        rows.appendChild(row);
+      });
+
+      sectionWrap.appendChild(sec);
+    });
+
+    if (!board.sections.length) {
+      sectionWrap.innerHTML = `<div class="empty">No sections yet. Add a section to start tracking costs.</div>`;
+    }
+
+    wrap.appendChild(boardEl);
+  });
+  updateTotals();
+}
+
+function getRefs(el){
+  const boardEl = el.closest('.board');
+  const sectionEl = el.closest('.section');
+  const rowEl = el.closest('.row');
+  const board = data.find(b => b.id === boardEl?.dataset.boardId);
+  const section = board && sectionEl ? board.sections.find(s => s.id === sectionEl.dataset.sectionId) : null;
+  const itemIndex = rowEl ? Number(rowEl.dataset.itemIndex) : -1;
+  return { boardEl, sectionEl, rowEl, board, section, itemIndex };
+}
+
+document.getElementById('addBoard').addEventListener('click', () => {
+  data.push({ id: uid(), title: 'New Board', sections: [{ id: uid(), title: 'NEW SECTION', collapsed:false, items: [{desc:'New Cost', cost:''}] }] });
+  save(); render();
+});
+
+document.getElementById('boards').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  const { board, section, itemIndex } = getRefs(btn);
+
+  if (action === 'add-cost') {
+    if (!board.sections.length) board.sections.push({id:uid(), title:'NEW SECTION', collapsed:false, items:[]});
+    board.sections[board.sections.length - 1].items.push({desc:'', cost:''});
+  }
+  if (action === 'add-section') board.sections.push({id:uid(), title:'NEW SECTION', collapsed:false, items:[{desc:'', cost:''}]});
+  if (action === 'delete-board') {
+    if (confirm('Delete this board?')) data = data.filter(b => b !== board);
+  }
+  if (action === 'toggle-section') {
+    section.collapsed = !section.collapsed;
+    save();
+    btn.closest('.section').classList.toggle('collapsed', section.collapsed);
+    return;
+  }
+  if (action === 'add-cost-to-section') {
+    section.items.unshift({desc:'', cost:''});
+  }
+  if (action === 'delete-section') {
+    board.sections = board.sections.filter(s => s !== section);
+  }
+  if (action === 'delete-row') {
+    section.items.splice(itemIndex, 1);
+  }
+  if (action === 'move-up' || action === 'move-down') {
+    const dir = action === 'move-up' ? -1 : 1;
+    const next = itemIndex + dir;
+    if (next >= 0 && next < section.items.length) {
+      [section.items[itemIndex], section.items[next]] = [section.items[next], section.items[itemIndex]];
+    }
+  }
+  save(); render();
+});
+
+document.getElementById('boards').addEventListener('input', e => {
+  const input = e.target;
+  const { board, section, itemIndex } = getRefs(input);
+
+  if (input.classList.contains('board-title')) board.title = input.value;
+  if (input.classList.contains('section-title')) section.title = input.value;
+  if (input.classList.contains('desc')) section.items[itemIndex].desc = input.value;
+  if (input.classList.contains('cost')) {
+    section.items[itemIndex].cost = input.value;
+    updateTotals();
+  }
+  save();
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+    e.preventDefault(); save();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
