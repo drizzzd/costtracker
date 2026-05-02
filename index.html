@@ -13,6 +13,11 @@
     --field:#ffffff;
     --bg:#f7f8fa;
     --dark:#09172a;
+    --radius:14px;
+    --new:#219ebc;
+    --new-hover:#5ec5dc;
+    --save:#90e0ef;
+    --save-hover:#b8edf5;
   }
   *{box-sizing:border-box}
   body{
@@ -29,21 +34,60 @@
   h1{font-size:42px;line-height:1;margin:0;font-weight:850;letter-spacing:-.035em}
   .top-actions{display:flex;align-items:center;gap:12px}
   .grand{
-    background:#fff;border:1px solid var(--line);border-radius:9px;
-    padding:11px 18px;font-weight:850;font-size:15px;box-shadow:0 1px 2px rgba(0,0,0,.03)
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    height:72px;
+    padding:0 34px;
+    font-weight:850;
+    font-size:26px;
+    display:flex;
+    align-items:center;
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
   }
   button{
-    border:1px solid var(--line);background:#fff;border-radius:8px;
-    padding:8px 12px;font-weight:750;font-size:12px;color:var(--ink);
-    cursor:pointer;box-shadow:0 1px 1px rgba(0,0,0,.02)
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:var(--radius);
+    height:38px;
+    padding:0 18px;
+    font-weight:750;
+    font-size:12px;
+    color:var(--ink);
+    cursor:pointer;
+    box-shadow:0 1px 1px rgba(0,0,0,.02);
   }
   button:hover{background:#f1f4f7}
+  #saveBtn,
+  #addBoard{
+    height:72px;
+    padding:0 26px;
+    font-size:22px;
+    font-weight:850;
+  }
+  #saveBtn{
+    background:var(--save);
+    border-color:var(--save);
+  }
+  #saveBtn:hover{
+    background:var(--save-hover);
+    border-color:var(--save-hover);
+  }
+  #addBoard{
+    background:var(--new);
+    border-color:var(--new);
+    color:#fff;
+  }
+  #addBoard:hover{
+    background:var(--new-hover);
+    border-color:var(--new-hover);
+  }
   .boards{
     display:grid;grid-template-columns:repeat(auto-fit,minmax(520px,1fr));
     gap:16px;align-items:start
   }
   .board{
-    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
     overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.025)
   }
   .board-head{
@@ -58,11 +102,11 @@
   .board-tools{padding:14px 17px;display:flex;gap:8px;border-bottom:1px solid var(--line)}
   .section{padding:9px 17px 4px}
   .section-head{
-    display:grid;grid-template-columns:auto 1fr auto auto auto;gap:8px;align-items:center;
+    display:grid;grid-template-columns:38px 1fr auto auto 76px;gap:8px;align-items:center;
     padding:6px 0 7px;border-bottom:1px solid var(--line)
   }
   .collapse{
-    width:26px;height:26px;padding:0;border-radius:7px;line-height:1;font-size:13px;
+    width:38px;height:38px;padding:0;border-radius:var(--radius);line-height:1;font-size:13px;
     display:flex;align-items:center;justify-content:center;color:#334155
   }
   .section-title{
@@ -71,16 +115,19 @@
   }
   .section-total{font-size:12px;color:#7c8797;font-weight:800;white-space:nowrap}
   .delete-section{
-    background:var(--dark);color:#fff;border:0;border-radius:999px;
-    width:38px;height:18px;padding:0;display:flex;align-items:center;justify-content:center
+    background:var(--dark);color:#fff;border:0;border-radius:var(--radius);
+    width:76px;height:38px;padding:0;display:flex;align-items:center;justify-content:center;
+    font-size:18px;
   }
   .rows{padding:7px 0 6px}
   .row{
     display:grid;grid-template-columns:1fr 132px 24px 38px;gap:8px;
-    align-items:center;margin:7px 0
+    align-items:center;margin:7px 0;cursor:grab;
   }
+  .row:active{cursor:grabbing}
+  .row.dragging{opacity:.45}
   input{
-    height:38px;border:1px solid var(--line);border-radius:8px;background:var(--field);
+    height:38px;border:1px solid var(--line);border-radius:var(--radius);background:var(--field);
     padding:0 11px;color:#111827;font-weight:650;outline:none;
   }
   input:focus{border-color:#9aa8ba;box-shadow:0 0 0 3px rgba(100,116,139,.12)}
@@ -88,11 +135,11 @@
   .cost{width:100%;text-align:left}
   .move-btn{
     height:18px;width:24px;padding:0;display:flex;align-items:center;justify-content:center;
-    color:#475569;background:#fff;border-radius:6px;font-size:12px;line-height:1
+    color:#475569;background:#fff;border-radius:var(--radius);font-size:12px;line-height:1
   }
   .move-stack{height:38px;display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center}
   .delete-row{
-    height:38px;width:38px;padding:0;background:var(--dark);color:#fff;border:0;border-radius:8px;
+    height:38px;width:38px;padding:0;background:var(--dark);color:#fff;border:0;border-radius:var(--radius);
     display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1
   }
   .section.collapsed .rows{display:none}
@@ -278,7 +325,6 @@ const parseCost = v => {
   return Number.isFinite(num) ? num : 0;
 };
 
-// Firebase / Firestore cloud sync
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
@@ -299,6 +345,7 @@ const trackerDoc = doc(db, "costData", "mountainTracker");
 let cloudReady = false;
 let applyingCloudUpdate = false;
 let saveTimer = null;
+let draggedRow = null;
 
 async function saveToCloud(){
   if (!cloudReady || applyingCloudUpdate) return;
@@ -430,6 +477,7 @@ function render(){
       section.items.forEach((item, i) => {
         const row = document.createElement('div');
         row.className = 'row';
+        row.draggable = true;
         row.dataset.itemIndex = i;
         row.innerHTML = `
           <input class="desc" value="">
@@ -553,6 +601,57 @@ document.getElementById('boards').addEventListener('input', e => {
   }
 
   save();
+});
+
+document.getElementById('boards').addEventListener('dragstart', e => {
+  const row = e.target.closest('.row');
+  if (!row) return;
+
+  draggedRow = row;
+  row.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+});
+
+document.getElementById('boards').addEventListener('dragend', e => {
+  const row = e.target.closest('.row');
+  if (row) row.classList.remove('dragging');
+  draggedRow = null;
+});
+
+document.getElementById('boards').addEventListener('dragover', e => {
+  e.preventDefault();
+
+  const targetRow = e.target.closest('.row');
+  if (!draggedRow || !targetRow || draggedRow === targetRow) return;
+
+  const draggedSection = draggedRow.closest('.section');
+  const targetSection = targetRow.closest('.section');
+
+  if (draggedSection !== targetSection) return;
+
+  const rows = targetRow.parentElement;
+  const targetBox = targetRow.getBoundingClientRect();
+  const insertAfter = e.clientY > targetBox.top + targetBox.height / 2;
+
+  rows.insertBefore(draggedRow, insertAfter ? targetRow.nextSibling : targetRow);
+});
+
+document.getElementById('boards').addEventListener('drop', e => {
+  e.preventDefault();
+
+  const sectionEl = e.target.closest('.section');
+  if (!sectionEl) return;
+
+  const { section } = getRefs(sectionEl);
+  if (!section) return;
+
+  const orderedRows = [...sectionEl.querySelectorAll('.row')];
+  const oldItems = [...section.items];
+
+  section.items = orderedRows.map(row => oldItems[Number(row.dataset.itemIndex)]);
+
+  save();
+  render();
 });
 
 document.addEventListener('keydown', e => {
