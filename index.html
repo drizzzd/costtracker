@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
     --field:#ffffff;
     --bg:#f7f8fa;
     --dark:#09172a;
-    --radius:3px;
+    --radius:8px;
     --new:#219ebc;
     --new-hover:#5ec5dc;
     --save:#90e0ef;
@@ -29,14 +30,14 @@
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   }
 
-  .app{max-width:1820px;margin:0 auto;padding:0 22px 42px}
+  .app{max-width:1820px;margin:0 auto;padding:75px 22px 42px}
 
   header{
     display:flex;align-items:center;justify-content:space-between;
     gap:18px;padding:0 0 14px;
   }
 
-  h1{font-size:42px;line-height:1;margin:0;font-weight:850;letter-spacing:-.035em}
+  h1{font-size:42px;line-height:1;margin:0;font-weight:600;letter-spacing:-.035em}
 
   .top-actions{display:flex;align-items:center;gap:12px}
 
@@ -45,9 +46,12 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     height:60px;
-    padding:0 34px;
-    font-weight:850;
+    max-height:50px;
+    max-height:50px;
+    padding: 0 10px;
+    font-weight:600;
     font-size:26px;
+    letter-spacing:-0.02em;
     display:flex;
     align-items:center;
     box-shadow:0 1px 2px rgba(0,0,0,.03);
@@ -70,31 +74,35 @@
 
   #saveBtn,
   #addBoard{
-    height:60px;
-    padding:0 26px;
-    font-size:22px;
-    font-weight:850;
+    height:50px;
+    max-height:50px;
+    padding:0 32px;
+    font-size:15px !important;
+    font-weight:600;
+    text-transform:none;
+    white-space:nowrap;
   }
 
   #saveBtn{
-    background:var(--save);
-    border-color:var(--save);
+    background:#0d1321;
+    border-color:#0d1321;
+    color:#fff;
   }
 
   #saveBtn:hover{
-    background:var(--save-hover);
-    border-color:var(--save-hover);
+    background:#1b2436;
+    border-color:#1b2436;
   }
 
   #addBoard{
-    background:var(--new);
-    border-color:var(--new);
+    background:#0d1321;
+    border-color:#0d1321;
     color:#fff;
   }
 
   #addBoard:hover{
-    background:var(--new-hover);
-    border-color:var(--new-hover);
+    background:#1b2436;
+    border-color:#1b2436;
   }
 
   .boards{
@@ -113,7 +121,7 @@
   }
 
   .board-title{
-    border:0;background:transparent;font-size:18px;font-weight:850;
+    border:0;background:transparent;font-size:18px;font-weight:600;
     padding:0;margin:0;min-width:0;width:100%;color:#111827
   }
 
@@ -121,36 +129,104 @@
 
   .board-tools{padding:14px 17px;display:flex;gap:8px;border-bottom:1px solid var(--line)}
 
-  .section{padding:9px 17px 4px}
+  .section{
+    padding:0 17px;
+  }
 
   .section-head{
-    display:grid;grid-template-columns:38px 1fr auto auto 76px;gap:8px;align-items:center;
-    padding:6px 0 7px;border-bottom:1px solid var(--line)
+    display:grid;
+    grid-template-columns:38px 1fr auto 38px 38px;
+    gap:8px;
+    align-items:center;
+    min-height:76px;
+    padding:0;
+    border-bottom:1px solid var(--line);
   }
 
   .collapse{
-    width:38px;height:38px;padding:0;border-radius:var(--radius);line-height:1;font-size:13px;
+    width:38px;height:38px;padding:0;border-radius:var(--radius);line-height:1;
     display:flex;align-items:center;justify-content:center;color:#334155
   }
 
-  .section-title{
-    border:0;background:transparent;color:#7c8797;font-size:12px;font-weight:900;
-    letter-spacing:.02em;text-transform:uppercase;padding:0;min-width:0;width:100%
+  .collapse svg{
+    stroke-linecap:round;
+    stroke-linejoin:round;
   }
 
-  .section-total{font-size:12px;color:#7c8797;font-weight:800;white-space:nowrap}
+  .section-title{
+    border:0;
+    background:transparent;
+    color:#7c8797;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.02em;
+    text-transform:none;
+    padding:0;
+    min-width:0;
+    width:100%;
+    display:flex;
+    align-items:center;
+  }
+
+  .section-total{
+    font-size:12px;
+    color:#7c8797;
+    font-weight:800;
+    white-space:nowrap;
+    display:flex;
+    align-items:center;
+  }
+
+
+  .add-cost-section{
+    width:38px;
+    height:38px;
+    min-width:38px;
+    max-width:38px;
+    padding:0;
+    background:#fff;
+    color:#142033;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:850;
+    line-height:1;
+  }
+
+  .add-cost-section:hover{
+    background:#f8fafc;
+  }
 
   .delete-section{
-    background:var(--dark);color:#fff;border:0;border-radius:var(--radius);
-    width:76px;height:38px;padding:0;display:flex;align-items:center;justify-content:center;
-    font-size:18px;
+    background:#fff;
+    color:#ef4444;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    width:38px;
+    height:38px;
+    min-width:38px;
+    max-width:38px;
+    padding:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:850;
+    line-height:1;
+  }
+
+  .delete-section:hover{
+    background:#f8fafc;
   }
 
   .rows{padding:7px 0 6px}
 
   .row{
     display:grid;
-    grid-template-columns:26px 1fr 132px 24px 38px;
+    grid-template-columns:26px 1fr 132px 38px;
     gap:8px;
     align-items:center;
     margin:7px 0;
@@ -168,6 +244,7 @@
   }
 
   .drag-handle:active{cursor:grabbing}
+
   .row.dragging{opacity:.45}
 
   input{
@@ -180,20 +257,94 @@
   .desc{width:100%}
   .cost{width:100%;text-align:left}
 
-  .move-btn{
-    height:18px;width:24px;padding:0;display:flex;align-items:center;justify-content:center;
-    color:#475569;background:#fff;border-radius:var(--radius);font-size:12px;line-height:1
+  
+
+  
+
+  
+  .icon-btn{
+    width:38px;
+    height:38px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
 
-  .move-stack{height:38px;display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center}
+  
+  .collapse.open{
+    background:#0d1321;
+    border-color:#0d1321;
+  }
+  .collapse.open svg{
+    stroke:#ffffff;
+  }
+
+  .icon-btn svg{
+    width:18px;
+    height:18px;
+    stroke:#142033;
+    stroke-width:2.5;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
 
   .delete-row{
-    height:38px;width:38px;padding:0;background:var(--dark);color:#fff;border:0;border-radius:var(--radius);
-    display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1
+    height:38px;
+    width:38px;
+    min-width:38px;
+    max-width:38px;
+    padding:0;
+    background:#fff;
+    color:#ef4444;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:850;
+    line-height:1;
+  }
+
+  .delete-row:hover{
+    background:#f8fafc;
+  }
+
+  .delete-row:hover{
+    background:#f1f4f7;
   }
 
   .section.collapsed .rows{display:none}
-  .section.collapsed .collapse{transform:rotate(-90deg)}
+  .collapse svg{
+    transition:transform .16s ease;
+    transform:rotate(0deg);
+  }
+
+  .section.collapsed .collapse svg{
+    transform:rotate(-90deg);
+  }
+
+  .section:not(.collapsed) .collapse{
+    background:#0d1321;
+    border-color:#0d1321;
+  }
+
+  .section:not(.collapsed) .collapse svg{
+    stroke:#ffffff;
+  }
+
+  .section-wrap .section:last-child .section-head{
+    border-bottom:0;
+  }
+
+  .section-wrap .section:last-child{
+    padding-bottom:0;
+  }
+
   .empty{padding:28px 17px;color:var(--muted);font-weight:650}
 
   @media (max-width:700px){
@@ -201,11 +352,521 @@
     header{align-items:flex-start}
     h1{font-size:32px}
     .boards{grid-template-columns:1fr}
-    .row{grid-template-columns:24px 1fr 105px 24px 34px}
+    .row{grid-template-columns:24px 1fr 105px 38px}
   }
 </style>
 </head>
 <body>
-<!-- rest of file unchanged -->
+<div class="app">
+  <header>
+    <h1>Mountain Tracker</h1>
+    <div class="top-actions">
+      <div class="grand" id="grandTotal">$0</div>
+      <button id="saveBtn">Save</button>
+      <button id="addBoard">New Board</button>
+    </div>
+  </header>
+  <main class="boards" id="boards"></main>
+</div>
+
+<script type="module">
+const seedData = [
+  {
+    "id": "b1",
+    "title": "Remodel",
+    "sections": [
+      {
+        "id": "s1",
+        "title": "FLOORING",
+        "collapsed": false,
+        "items": [
+          { "desc": "Tile Material", "cost": 16500 },
+          { "desc": "Tile Installation", "cost": 15000 },
+          { "desc": "Hardwood Flooring (Material + Installation)", "cost": 19000 }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "WALLS",
+        "collapsed": false,
+        "items": [
+          { "desc": "Baseboard (Material + Installation)", "cost": 4000 },
+          { "desc": "Paint (Walls, Ceiling, Baseboards)", "cost": 10001 },
+          { "desc": "Drywall Repair", "cost": 2000 }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "COUNTERTOPS",
+        "collapsed": false,
+        "items": [
+          { "desc": "Quarts Slabs (4)", "cost": 6000 },
+          { "desc": "Kitchen Countertop Installation", "cost": 6500 },
+          { "desc": "Bathroom Vanity Countertop Fabrication + Installation", "cost": 3000 }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "CABINETS",
+        "collapsed": false,
+        "items": [
+          { "desc": "Cabinetry Paint Labor", "cost": 7000 },
+          { "desc": "Cabinetry Paint Material", "cost": 500 }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "BATHROOM HARDWARE AND PLUMBING",
+        "collapsed": false,
+        "items": [
+          { "desc": "Master Bathroom Undermounted Sinks", "cost": 400 },
+          { "desc": "Master Bathroom Vanity Faucets", "cost": 1200 },
+          { "desc": "Master Bathroom Vanity Light Fixtures", "cost": 400 },
+          { "desc": "Master Bathroom Vanity Mirrors", "cost": 600 },
+          { "desc": "Master Tub Fixture", "cost": 500 },
+          { "desc": "Master Shower Fixture", "cost": 700 },
+          { "desc": "Eisley Bathroom Vanity", "cost": 1800 },
+          { "desc": "Eisley Bathroom Vanity Mirror", "cost": 450 },
+          { "desc": "Eisley Bathroom Vanity Faucet", "cost": 640 },
+          { "desc": "Eisley Bathroom Vanity Light Fixture", "cost": 275 },
+          { "desc": "Eisley Shower Fixture", "cost": 700 },
+          { "desc": "Cash Bathroom Vanity Faucet", "cost": 640 },
+          { "desc": "Cash Bathroom Vanity Light Fixture", "cost": 200 },
+          { "desc": "Cash Bathroom Vanity Mirror", "cost": 300 },
+          { "desc": "Cash Bathroom Shower Fixture", "cost": 700 }
+        ]
+      },
+      {
+        "id": "s6",
+        "title": "FANS AND LIGHTING",
+        "collapsed": false,
+        "items": [
+          { "desc": "Ceiling Fans", "cost": 3600 },
+          { "desc": "Hanging Light Fixtures", "cost": 5000 }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b2",
+    "title": "New Board",
+    "sections": [
+      {
+        "id": "s7",
+        "title": "MASTER BEDROOM",
+        "collapsed": false,
+        "items": [
+          { "desc": "Storage Credenza", "cost": 4000 },
+          { "desc": "Nightstand Dressers", "cost": 4000 },
+          { "desc": "Mattress", "cost": 4000 }
+        ]
+      },
+      {
+        "id": "s8",
+        "title": "EISLEY'S ROOM",
+        "collapsed": false,
+        "items": [
+          { "desc": "Trundle Bed", "cost": 1600 },
+          { "desc": "Full Mirror", "cost": 200 },
+          { "desc": "Vanity Desk + Storage", "cost": 600 },
+          { "desc": "Built-In Shelving Frame", "cost": 250 },
+          { "desc": "Mattresses", "cost": 1500 }
+        ]
+      },
+      {
+        "id": "s9",
+        "title": "CASH'S ROOM",
+        "collapsed": false,
+        "items": [
+          { "desc": "Trundle Bed", "cost": 1700 },
+          { "desc": "Bookshelf + Drawer Combos", "cost": 2000 },
+          { "desc": "Corner Floating Shelves", "cost": 840 },
+          { "desc": "Desk", "cost": 1200 },
+          { "desc": "Reading Chair", "cost": 850 },
+          { "desc": "Mattresses", "cost": 1500 }
+        ]
+      },
+      {
+        "id": "s10",
+        "title": "LIVING ROOM",
+        "collapsed": false,
+        "items": [
+          { "desc": "Sofa", "cost": 7500 },
+          { "desc": "Chair", "cost": 2500 },
+          { "desc": "Coffee Table", "cost": 600 }
+        ]
+      },
+      {
+        "id": "s11",
+        "title": "DINING ROOM",
+        "collapsed": false,
+        "items": [
+          { "desc": "Table Bench", "cost": 630 }
+        ]
+      },
+      {
+        "id": "s12",
+        "title": "MISC",
+        "collapsed": false,
+        "items": [
+          { "desc": "Rugs", "cost": 5000 },
+          { "desc": "Adirondack Chairs", "cost": 725 },
+          { "desc": "Teak Patio Dining Set", "cost": 1600 }
+        ]
+      }
+    ]
+  }
+];
+
+const uid = () => Math.random().toString(36).slice(2,10);
+const money = n => '$' + Math.round(Number(n || 0)).toLocaleString('en-US');
+const parseCost = v => {
+  if (typeof v === 'number') return v;
+  const cleaned = String(v ?? '').replace(/[^0-9.-]/g,'');
+  const num = Number(cleaned);
+  return Number.isFinite(num) ? num : 0;
+};
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD4AG4Q8yW-_Y0t6ixSvJihsGxPtvhQMNs",
+  authDomain: "cost-tracker-26127.firebaseapp.com",
+  projectId: "cost-tracker-26127",
+  storageBucket: "cost-tracker-26127.firebasestorage.app",
+  messagingSenderId: "210975975168",
+  appId: "1:210975975168:web:579808e77457ee3553b5e5",
+  measurementId: "G-GXY6QZ25PT"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const trackerDoc = doc(db, "costData", "mountainTracker");
+
+let cloudReady = false;
+let applyingCloudUpdate = false;
+let saveTimer = null;
+let draggedRow = null;
+
+async function saveToCloud(){
+  if (!cloudReady || applyingCloudUpdate) return;
+  try {
+    await setDoc(trackerDoc, {
+      boards: data,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (err) {
+    console.error("Cloud save failed:", err);
+  }
+}
+
+function scheduleCloudSave(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveToCloud, 1500);
+}
+
+async function loadFromCloud(){
+  try {
+    const snap = await getDoc(trackerDoc);
+    if (snap.exists() && Array.isArray(snap.data().boards)) {
+      data = snap.data().boards;
+      localStorage.setItem('mountainTrackerData', JSON.stringify(data));
+    } else {
+      await setDoc(trackerDoc, {
+        boards: data,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+  } catch (err) {
+    console.error("Cloud load failed:", err);
+  } finally {
+    cloudReady = true;
+    render();
+  }
+
+  onSnapshot(trackerDoc, snapshot => {
+    if (!snapshot.exists() || !Array.isArray(snapshot.data().boards)) return;
+
+    const active = document.activeElement;
+    const userIsEditing = active && active.tagName === 'INPUT';
+
+    if (userIsEditing) return;
+
+    applyingCloudUpdate = true;
+    data = snapshot.data().boards;
+    localStorage.setItem('mountainTrackerData', JSON.stringify(data));
+    render();
+    applyingCloudUpdate = false;
+  }, err => {
+    console.error("Cloud listener failed:", err);
+  });
+}
+
+let data = structuredClone(seedData);
+try {
+  const saved = localStorage.getItem('mountainTrackerData');
+  if (saved) data = JSON.parse(saved);
+} catch {}
+
+function save(){
+  localStorage.setItem('mountainTrackerData', JSON.stringify(data));
+  scheduleCloudSave();
+}
+
+async function manualSave(){
+  localStorage.setItem('mountainTrackerData', JSON.stringify(data));
+  await saveToCloud();
+}
+
+function sectionTotal(section){ return section.items.reduce((sum, item) => sum + parseCost(item.cost), 0); }
+function boardTotal(board){ return board.sections.reduce((sum, section) => sum + sectionTotal(section), 0); }
+function grandTotal(){ return data.reduce((sum, board) => sum + boardTotal(board), 0); }
+
+function updateTotals(){
+  document.getElementById('grandTotal').textContent = money(grandTotal());
+  document.querySelectorAll('[data-board-total]').forEach(el => {
+    const b = data.find(x => x.id === el.dataset.boardTotal);
+    if (b) el.textContent = money(boardTotal(b));
+  });
+  document.querySelectorAll('[data-section-total]').forEach(el => {
+    const [bid, sid] = el.dataset.sectionTotal.split('|');
+    const b = data.find(x => x.id === bid);
+    const s = b?.sections.find(x => x.id === sid);
+    if (s) el.textContent = money(sectionTotal(s));
+  });
+}
+
+function render(){
+  const wrap = document.getElementById('boards');
+  wrap.innerHTML = '';
+  data.forEach(board => {
+    const boardEl = document.createElement('section');
+    boardEl.className = 'board';
+    boardEl.dataset.boardId = board.id;
+    boardEl.innerHTML = `
+      <div class="board-head">
+        <input class="board-title" value="">
+        <div class="board-total" data-board-total="${board.id}"></div>
+      </div>
+      <div class="board-tools">
+        <button data-action="add-cost">+ Cost</button>
+        <button data-action="add-section">+ Section</button>
+        <button data-action="delete-board">Delete</button>
+      </div>
+      <div class="section-wrap"></div>
+    `;
+    boardEl.querySelector('.board-title').value = board.title;
+    const sectionWrap = boardEl.querySelector('.section-wrap');
+
+    board.sections.forEach(section => {
+      const sec = document.createElement('div');
+      sec.className = 'section' + (section.collapsed ? ' collapsed' : '');
+      sec.dataset.sectionId = section.id;
+      sec.innerHTML = `
+        <div class="section-head">
+          <button class="collapse icon-btn" data-action="toggle-section"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+          <input class="section-title" value="">
+          <div class="section-total" data-section-total="${board.id}|${section.id}"></div>
+          <button class="add-cost-section icon-btn" data-action="add-cost-to-section"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="delete-section icon-btn" data-action="delete-section"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6l-12 12"/></svg></button>
+        </div>
+        <div class="rows"></div>
+      `;
+      sec.querySelector('.section-title').value = section.title;
+      const rows = sec.querySelector('.rows');
+
+      section.items.forEach((item, i) => {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.dataset.itemIndex = i;
+        row.innerHTML = `
+          <div class="drag-handle" draggable="true" title="Drag to reorder">⋮⋮</div>
+          <input class="desc" value="">
+          <input class="cost" inputmode="decimal" value="">
+          
+          <button class="delete-row icon-btn" data-action="delete-row"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6l-12 12"/></svg></button>
+        `;
+        row.querySelector('.desc').value = item.desc;
+        row.querySelector('.cost').value = item.cost === '' ? '' : String(item.cost);
+        rows.appendChild(row);
+      });
+
+      sectionWrap.appendChild(sec);
+    });
+
+    if (!board.sections.length) {
+      sectionWrap.innerHTML = `<div class="empty">No sections yet. Add a section to start tracking costs.</div>`;
+    }
+
+    wrap.appendChild(boardEl);
+  });
+  updateTotals();
+}
+
+function getRefs(el){
+  const boardEl = el.closest('.board');
+  const sectionEl = el.closest('.section');
+  const rowEl = el.closest('.row');
+  const board = data.find(b => b.id === boardEl?.dataset.boardId);
+  const section = board && sectionEl ? board.sections.find(s => s.id === sectionEl.dataset.sectionId) : null;
+  const itemIndex = rowEl ? Number(rowEl.dataset.itemIndex) : -1;
+  return { boardEl, sectionEl, rowEl, board, section, itemIndex };
+}
+
+document.getElementById('saveBtn').addEventListener('click', async () => {
+  await manualSave();
+});
+
+document.getElementById('addBoard').addEventListener('click', () => {
+  data.push({
+    id: uid(),
+    title: 'New Board',
+    sections: [
+      {
+        id: uid(),
+        title: 'NEW SECTION',
+        collapsed:false,
+        items: [{desc:'New Cost', cost:''}]
+      }
+    ]
+  });
+  save();
+  render();
+});
+
+document.getElementById('boards').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+
+  const action = btn.dataset.action;
+  const { board, section, itemIndex } = getRefs(btn);
+
+  if (action === 'add-cost') {
+    if (!board.sections.length) board.sections.push({id:uid(), title:'NEW SECTION', collapsed:false, items:[]});
+    board.sections[board.sections.length - 1].items.push({desc:'', cost:''});
+  }
+
+  if (action === 'add-section') {
+    board.sections.push({id:uid(), title:'NEW SECTION', collapsed:false, items:[{desc:'', cost:''}]});
+  }
+
+  if (action === 'delete-board') {
+    if (confirm('Delete this board?')) data = data.filter(b => b !== board);
+  }
+
+  if (action === 'toggle-section') {
+    section.collapsed = !section.collapsed;
+    save();
+    btn.closest('.section').classList.toggle('collapsed', section.collapsed);
+    return;
+  }
+
+  if (action === 'add-cost-to-section') {
+    section.items.unshift({desc:'', cost:''});
+  }
+
+  if (action === 'delete-section') {
+    board.sections = board.sections.filter(s => s !== section);
+  }
+
+  if (action === 'delete-row') {
+    section.items.splice(itemIndex, 1);
+  }
+
+  if (action === 'move-up' || action === 'move-down') {
+    const dir = action === 'move-up' ? -1 : 1;
+    const next = itemIndex + dir;
+    if (next >= 0 && next < section.items.length) {
+      [section.items[itemIndex], section.items[next]] = [section.items[next], section.items[itemIndex]];
+    }
+  }
+
+  save();
+  render();
+});
+
+document.getElementById('boards').addEventListener('input', e => {
+  const input = e.target;
+  const { board, section, itemIndex } = getRefs(input);
+
+  if (input.classList.contains('board-title')) board.title = input.value;
+  if (input.classList.contains('section-title')) section.title = input.value;
+  if (input.classList.contains('desc')) section.items[itemIndex].desc = input.value;
+
+  if (input.classList.contains('cost')) {
+    section.items[itemIndex].cost = input.value;
+    updateTotals();
+  }
+
+  save();
+});
+
+document.getElementById('boards').addEventListener('dragstart', e => {
+  const handle = e.target.closest('.drag-handle');
+  if (!handle) return;
+
+  const row = handle.closest('.row');
+  if (!row) return;
+
+  draggedRow = row;
+  row.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', '');
+});
+
+document.getElementById('boards').addEventListener('dragend', () => {
+  if (draggedRow) draggedRow.classList.remove('dragging');
+  draggedRow = null;
+});
+
+document.getElementById('boards').addEventListener('dragover', e => {
+  if (!draggedRow) return;
+
+  const targetRow = e.target.closest('.row');
+  if (!targetRow || draggedRow === targetRow) return;
+
+  const draggedSection = draggedRow.closest('.section');
+  const targetSection = targetRow.closest('.section');
+
+  if (draggedSection !== targetSection) return;
+
+  e.preventDefault();
+
+  const rows = targetRow.parentElement;
+  const box = targetRow.getBoundingClientRect();
+  const after = e.clientY > box.top + box.height / 2;
+
+  rows.insertBefore(draggedRow, after ? targetRow.nextSibling : targetRow);
+});
+
+document.getElementById('boards').addEventListener('drop', e => {
+  e.preventDefault();
+
+  if (!draggedRow) return;
+
+  const sectionEl = draggedRow.closest('.section');
+  const { section } = getRefs(sectionEl);
+  if (!section) return;
+
+  const oldItems = [...section.items];
+  const orderedRows = [...sectionEl.querySelectorAll('.row')];
+
+  section.items = orderedRows.map(row => oldItems[Number(row.dataset.itemIndex)]);
+
+  save();
+  render();
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+    e.preventDefault();
+    manualSave();
+  }
+});
+
+
+loadFromCloud();
+</script>
 </body>
 </html>
